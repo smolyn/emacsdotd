@@ -45,6 +45,8 @@
 (setq auto-save-list-file-prefix savesdir)
 (setq backup-by-copying t)
 (setq create-lockfiles nil)
+(setq auto-revert-use-notify nil)
+(global-auto-revert-mode t)
 
 ;; (setq backup-directory-alist `(("." . "~/.saves")))
 (setq delete-old-versions t
