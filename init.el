@@ -84,7 +84,7 @@
 (global-set-key (kbd "M-x") 'helm-M-x)
 (helm-mode 1)
 (setq projectile-tags-command "/usr/local/bin/ctags -Re -f %s %s")
-
+(setq projectile-globally-ignored-file-extensions '(".o" ".d" ".pyc" ".class" ))
 
 ;; org-mode
 (require 'org)
