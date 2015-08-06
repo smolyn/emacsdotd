@@ -86,6 +86,12 @@
 (setq projectile-tags-command "/usr/local/bin/ctags -Re -f %s %s")
 (setq projectile-globally-ignored-file-extensions '(".o" ".d" ".pyc" ".class" ))
 
+;; flycheck
+(require 'flycheck)
+(setq flycheck-jshintrc "~/.emacs.d/.jshintrc")
+(add-hook 'js-mode-hook
+          (lambda () (flycheck-mode t)))
+
 ;; org-mode
 (require 'org)
 (setq org-log-done t)

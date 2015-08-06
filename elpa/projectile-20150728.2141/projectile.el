@@ -1067,7 +1067,7 @@ Only buffers not visible in windows are returned."
 
 (defun projectile-paths-to-ignore ()
   "Return a list of ignored project paths."
-  (-non-nil (cdr (projectile-parse-dirconfig-file)))))
+  (-non-nil (cdr (projectile-parse-dirconfig-file))))
 
 (defun projectile-patterns-to-ignore ()
   "Return a list of relative file patterns."

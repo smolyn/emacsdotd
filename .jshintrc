@@ -1,0 +1,16 @@
+{
+"curly": true,
+"expr": true,
+"futurehostile": true,
+"indent": 4,
+"nonbsp": true,
+"nocomma": true,
+"sub": true,
+"undef": true,
+"white": true,
+"browser": true,
+"predef": [
+"$A",
+"Promise"
+]
+}
