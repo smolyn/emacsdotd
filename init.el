@@ -118,7 +118,10 @@
               ;; enable flycheck
               (flycheck-select-checker 'jsxhint-checker)
               (flycheck-mode))))
-(eval-after-load "web-mode" '(setq web-mode-tag-auto-close-style 0))
+(defun my-web-mode-hook ()
+  (setq web-mode-enable-auto-quoting nil)
+  (setq web-mode-enable-auto-closing nil))
+(add-hook 'web-mode-hook 'my-web-mode-hook)
 
 ;; visual/UI
 
