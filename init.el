@@ -9,6 +9,9 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
+; local path
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
 ;(setq debug-on-error t)
 
 (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
@@ -65,6 +68,7 @@
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.cmp\\'" . xml-mode))
 (add-to-list 'auto-mode-alist '("\\.theme\\'" . xml-mode))
+(add-to-list 'auto-mode-alist '("\\.tokens\\'" . xml-mode))
 (add-to-list 'auto-mode-alist '("\\.app\\'" . xml-mode))
 (add-to-list 'auto-mode-alist '("\\.auradoc\\'" . xml-mode))
 (add-to-list 'auto-mode-alist '("\\.intf\\'" . xml-mode))
@@ -96,6 +100,7 @@
 (require 'org)
 (setq org-log-done t)
 
+(require 'xunitjs)
 ;;
 ;; jsx/react
 ;;
@@ -155,6 +160,8 @@
 (setq gc-cons-threshold 100000000)
 
 
+
+
 ; FUNCTIONS
 ;
 ;
@@ -171,6 +178,8 @@
       (setq list (cdr list))
       (setq buffer (car list))))
   (message "Refreshed open files"))
+
+
 
 
 (custom-set-variables
