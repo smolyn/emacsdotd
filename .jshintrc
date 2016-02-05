@@ -12,6 +12,9 @@
 "predef": [
 "$A",
 "Promise",
-"picassoSPA"
+"picassoSPA",
+"Assert",
+"Stubs",
+"Mocks"
 ]
 }

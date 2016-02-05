@@ -90,6 +90,8 @@
 (setq projectile-tags-command "/usr/local/bin/ctags -Re -f %s %s")
 (setq projectile-globally-ignored-file-extensions '(".o" ".d" ".pyc" ".class" ))
 
+(setq ag-reuse-buffers 't)
+
 ;; flycheck
 (require 'flycheck)
 (setq flycheck-jshintrc "~/.emacs.d/.jshintrc")
@@ -139,6 +141,8 @@
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier nil)
 (global-set-key "\M-`" 'other-frame)
+
+(setq split-width-threshold nil) ; prefer horizontal windows
 
 (powerline-center-theme)
 
