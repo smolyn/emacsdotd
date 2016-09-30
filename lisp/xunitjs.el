@@ -46,7 +46,7 @@
   (let* ((cmd (concat (mapconcat 'file-name-as-directory (list "../sfdc-test/tools/javascript/external/Engines"  xunitjs-os) "")  xunitjs-engine))
          (driver (concat (file-name-as-directory "../sfdc-test/tools/javascript/external/xUnit.js") "xUnit.js.Console.js"))
          (dependency "../sfdc-test/tools/javascript/sfdc")
-         (arguments (mapconcat #'shell-quote-argument (list driver "--" dependency "/strict:false" "/coverage:false" (buffer-file-name)) " "))
+         (arguments (mapconcat #'shell-quote-argument (list driver "--" dependency "/strict:false" "/coverage:false" "/verbose:true" (buffer-file-name)) " "))
          (working-dir (mapconcat 'file-name-as-directory (list xunitjs-base-path "build") ""))
          (cmd-string (concat "cd " working-dir " && " cmd " " arguments)))
 ;    (message "XUNITJS CMD string: %s" cmd-string)
