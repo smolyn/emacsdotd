@@ -109,32 +109,33 @@
 (setq org-log-done t)
 
 (require 'xunitjs)
+
 ;;
 ;; jsx/react
 ;;
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-(defadvice web-mode-highlight-part (around tweak-jsx activate)
-  (if (equal web-mode-content-type "jsx")
-      (let ((web-mode-enable-part-face nil))
-        ad-do-it)
-    ad-do-it))
-(flycheck-define-checker jsxhint-checker
-  "A JSX syntax and style checker based on JSXHint."
+;; (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+;; (defadvice web-mode-highlight-part (around tweak-jsx activate)
+;;   (if (equal web-mode-content-type "jsx")
+;;       (let ((web-mode-enable-part-face nil))
+;;         ad-do-it)
+;;     ad-do-it))
+;; (flycheck-define-checker jsxhint-checker
+;;   "A JSX syntax and style checker based on JSXHint."
 
-  :command ("jsxhint" source)
-  :error-patterns
-  ((error line-start (1+ nonl) ": line " line ", col " column ", " (message) line-end))
-  :modes (web-mode))
-(add-hook 'web-mode-hook
-          (lambda ()
-            (when (equal web-mode-content-type "jsx")
-              ;; enable flycheck
-              (flycheck-select-checker 'jsxhint-checker)
-              (flycheck-mode))))
-(defun my-web-mode-hook ()
-  (setq web-mode-enable-auto-quoting nil)
-  (setq web-mode-enable-auto-closing nil))
-(add-hook 'web-mode-hook 'my-web-mode-hook)
+;;   :command ("jsxhint" source)
+;;   :error-patterns
+;;   ((error line-start (1+ nonl) ": line " line ", col " column ", " (message) line-end))
+;;   :modes (web-mode))
+;; (add-hook 'web-mode-hook
+;;           (lambda ()
+;;             (when (equal web-mode-content-type "jsx")
+;;               ;; enable flycheck
+;;               (flycheck-select-checker 'jsxhint-checker)
+;;               (flycheck-mode))))
+;; (defun my-web-mode-hook ()
+;;   (setq web-mode-enable-auto-quoting nil)
+;;   (setq web-mode-enable-auto-closing nil))
+;; (add-hook 'web-mode-hook 'my-web-mode-hook)
 
 ;; visual/UI
 
@@ -154,23 +155,10 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;(require 'flx-ido)
-;(ido-mode 1)
-;(ido-everywhere 1)
-;(flx-ido-mode 1)
-;(setq flx-ido-threshold 10000)
-
 (require 'smooth-scrolling)
 (setq mouse-wheel-scroll-amount '(1))
-;(setq mouse-wheel-progressive-speed nil)
 
-
-;(require 'minimap)
-;(setq gc-cons-threshold 20000000)
 (setq gc-cons-threshold 100000000)
-
-
-
 
 ; FUNCTIONS
 ;
@@ -190,16 +178,29 @@
   (message "Refreshed open files"))
 
 
-
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ido-enable-flex-matching t)
- '(ido-ubiquitous-mode t)
- '(ido-use-faces nil)
+ '(helm-completing-read-handlers-alist
+   (quote
+    ((describe-function . helm-completing-read-symbols)
+     (describe-variable . helm-completing-read-symbols)
+     (describe-symbol . helm-completing-read-symbols)
+     (debug-on-entry . helm-completing-read-symbols)
+     (find-function . helm-completing-read-symbols)
+     (disassemble . helm-completing-read-symbols)
+     (trace-function . helm-completing-read-symbols)
+     (trace-function-foreground . helm-completing-read-symbols)
+     (trace-function-background . helm-completing-read-symbols)
+     (find-tag . helm-completing-read-with-cands-in-buffer)
+     (org-capture . helm-org-completing-read-tags)
+     (org-set-tags . helm-org-completing-read-tags)
+     (ffap-alternate-file)
+     (tmm-menubar)
+     (find-file . helm-completing-read-symbols)
+     (execute-extended-command))))
  '(linum-delay t)
  '(nxml-child-indent 4)
  '(package-selected-packages
