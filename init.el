@@ -30,7 +30,6 @@
 (setq c-basic-offset 4)
 (setq tab-width 4)
 (setq indent-tabs-mode nil)
-
 (setq-default indent-tabs-mode nil)
 
 ;; files
@@ -95,8 +94,15 @@
 ;; flycheck
 (require 'flycheck)
 (setq flycheck-jshintrc "~/.emacs.d/.jshintrc")
+(setq flycheck-eslintrc "~/.emacs.d/.eslintrc")
 (add-hook 'js-mode-hook
           (lambda () (flycheck-mode t)))
+(flycheck-add-mode 'javascript-eslint 'js2-mode)
+(flycheck-add-mode 'javascript-eslint 'js-mode)
+
+(setq-default flycheck-disabled-checkers
+              (append flycheck-disabled-checkers
+                      '(javascript-jshint)))
 
 ;; org-mode
 (require 'org)
@@ -196,6 +202,9 @@
  '(ido-use-faces nil)
  '(linum-delay t)
  '(nxml-child-indent 4)
+ '(package-selected-packages
+   (quote
+    (yasnippet yaml-mode web-mode smooth-scrolling smex sass-mode powerline paredit p4 org-pomodoro org-plus-contrib org nurumacs monokai-theme minimap markdown-mode magit less-css-mode jsx-mode js2-mode ido-ubiquitous helm-projectile helm-ag git-rebase-mode git-commit-mode flycheck flx-ido find-file-in-project f es-windows es-lib coffee-mode ag)))
  '(projectile-project-root-files
    (quote
     ("rebar.config" "project.clj" "SConstruct" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs")))
