@@ -73,6 +73,14 @@
 (add-to-list 'auto-mode-alist '("\\.intf\\'" . xml-mode))
 (add-to-list 'auto-mode-alist '("\\.evt\\'" . xml-mode))
 
+
+;; octave
+(require 'ac-octave)
+(defun ac-octave-mode-setup ()
+  (setq ac-sources '(ac-complete-octave)))
+(add-hook 'octave-mode-hook
+          '(lambda () (ac-octave-mode-setup)))
+
 ;; projectile/helm
 (require 'helm-config)
 (projectile-global-mode)
@@ -205,7 +213,7 @@
  '(nxml-child-indent 4)
  '(package-selected-packages
    (quote
-    (yasnippet yaml-mode web-mode smooth-scrolling smex sass-mode powerline paredit p4 org-pomodoro org-plus-contrib org nurumacs monokai-theme minimap markdown-mode magit less-css-mode jsx-mode js2-mode ido-ubiquitous helm-projectile helm-ag git-rebase-mode git-commit-mode flycheck flx-ido find-file-in-project f es-windows es-lib coffee-mode ag)))
+    (ac-octave yasnippet yaml-mode web-mode smooth-scrolling smex sass-mode powerline paredit p4 org-pomodoro org-plus-contrib org nurumacs monokai-theme minimap markdown-mode magit less-css-mode jsx-mode js2-mode ido-ubiquitous helm-projectile helm-ag git-rebase-mode git-commit-mode flycheck flx-ido find-file-in-project f es-windows es-lib coffee-mode ag)))
  '(projectile-project-root-files
    (quote
     ("rebar.config" "project.clj" "SConstruct" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "config.blt")))
