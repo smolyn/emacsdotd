@@ -81,23 +81,52 @@
 (add-hook 'octave-mode-hook
           '(lambda () (ac-octave-mode-setup)))
 
-;; projectile/helm
-(require 'helm-config)
-(projectile-global-mode)
+
+;; projectile
 (setq projectile-indexing-method 'alien)
 (setq projectile-enable-caching t)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
-(setq helm-quick-update t
-     helm-idle-delay 0.01
-    helm-input-idle-delay 0.01)
-(setq helm-ff-file-name-history-use-recentf t)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(helm-mode 1)
+(setq projectile-completion-system 'ivy)
 (setq projectile-tags-command "/usr/local/bin/ctags -Re -f %s %s")
 (setq projectile-globally-ignored-file-extensions '(".o" ".d" ".pyc" ".class" ))
+(projectile-global-mode)
 
+;; projectile/helm
+;; (require 'helm-config)
+;; (helm-projectile-on)
+;; (setq helm-quick-update t
+;;      helm-idle-delay 0.01
+;;     helm-input-idle-delay 0.01)
+;; (setq helm-ff-file-name-history-use-recentf t)
+;; (global-set-key (kbd "M-x") 'helm-M-x)
+;; (helm-mode 1)
+
+;; ivy
+(all-the-icons-ivy-setup)
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq ivy-count-format "(%d/%d) ")
+(setq ivy-re-builders-alist
+      '((t . ivy--regex-ignore-order)))
+(global-set-key "\C-s" 'swiper)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "<f6>") 'ivy-resume)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "<f1> f") 'counsel-describe-function)
+(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+(global-set-key (kbd "<f1> l") 'counsel-find-library)
+(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+(global-set-key (kbd "C-c g") 'counsel-git)
+(global-set-key (kbd "C-c j") 'counsel-git-grep)
+(global-set-key (kbd "C-c k") 'counsel-ag)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+(define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+
+;; ag
 (setq ag-reuse-buffers 't)
+
 
 ;; flycheck
 (require 'flycheck)
@@ -213,7 +242,7 @@
  '(nxml-child-indent 4)
  '(package-selected-packages
    (quote
-    (ac-octave yasnippet yaml-mode web-mode smooth-scrolling smex sass-mode powerline paredit p4 org-pomodoro org-plus-contrib org nurumacs monokai-theme minimap markdown-mode magit less-css-mode jsx-mode js2-mode ido-ubiquitous helm-projectile helm-ag git-rebase-mode git-commit-mode flycheck flx-ido find-file-in-project f es-windows es-lib coffee-mode ag)))
+    (counsel counsel-gtags counsel-projectile ivy-todo all-the-icons-ivy ac-octave yasnippet yaml-mode web-mode smooth-scrolling smex sass-mode powerline paredit p4 org-pomodoro org-plus-contrib org nurumacs monokai-theme minimap markdown-mode magit less-css-mode jsx-mode js2-mode ido-ubiquitous helm-projectile helm-ag git-rebase-mode git-commit-mode flycheck flx-ido find-file-in-project f es-windows es-lib coffee-mode ag)))
  '(projectile-project-root-files
    (quote
     ("rebar.config" "project.clj" "SConstruct" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "config.blt")))
