@@ -75,14 +75,19 @@
 
 
 ;; octave
-(require 'ac-octave)
-(defun ac-octave-mode-setup ()
-  (setq ac-sources '(ac-complete-octave)))
-(add-hook 'octave-mode-hook
-          '(lambda () (ac-octave-mode-setup)))
+;; (require 'ac-octave)
+;; (defun ac-octave-mode-setup ()
+;;   (setq ac-sources '(ac-complete-octave)))
+;; (add-hook 'octave-mode-hook
+;;           '(lambda () (ac-octave-mode-setup)))
 
 
 ;; projectile
+; change mode line for perf reasons (broken)
+; see https://github.com/bbatsov/projectile/issues/1183
+(setq projectile-mode-line
+         '(:eval (format " Projectile[%s]"
+                        (projectile-project-name))))
 (setq projectile-indexing-method 'alien)
 (setq projectile-enable-caching t)
 (setq projectile-completion-system 'ivy)
