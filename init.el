@@ -225,6 +225,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(counsel-async-filter-update-time 1000)
  '(helm-completing-read-handlers-alist
    (quote
     ((describe-function . helm-completing-read-symbols)
@@ -243,6 +244,7 @@
      (tmm-menubar)
      (find-file . helm-completing-read-symbols)
      (execute-extended-command))))
+ '(ivy-dynamic-exhibit-delay-ms 500)
  '(linum-delay t)
  '(nxml-child-indent 4)
  '(package-selected-packages
