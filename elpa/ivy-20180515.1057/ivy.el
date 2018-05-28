@@ -2908,7 +2908,10 @@ CANDIDATES are assumed to be static."
                           (lambda (x) (string-match re x))
                           ivy--old-cands)))
                       (t
-                       (ivy--re-filter re candidates)))))
+                       (if (eq (+ 1 (length ivy--old-re)) (length re))
+                           (ivy--re-filter re ivy--old-cands)
+                         (ivy--re-filter re candidates))
+                       ))))
         (if (memq (cdr (assoc (ivy-state-caller ivy-last)
                               ivy-index-functions-alist))
                   '(ivy-recompute-index-swiper
