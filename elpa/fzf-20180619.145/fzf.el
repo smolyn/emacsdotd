@@ -115,7 +115,7 @@
          (window-height (if fzf/position-bottom (- min-height) min-height))
          (window-system-args (when window-system " --margin=1,0"))
          (fzf-args (concat fzf/args window-system-args))
-         (sh-cmd (concat "FZF_DEFAULT_COMMAND='fd --type file' "
+         (sh-cmd (concat "FZF_DEFAULT_COMMAND='fd -I --type file' "
                          (if cmd-stream (concat cmd-stream " | " fzf/executable " " fzf-args)
                            (concat fzf/executable " " fzf-args)))))
     (with-current-buffer buf
