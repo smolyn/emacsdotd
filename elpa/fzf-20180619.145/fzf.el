@@ -118,11 +118,12 @@
          (sh-cmd (concat "FZF_DEFAULT_COMMAND='fd -I --type file' "
                          (if cmd-stream (concat cmd-stream " | " fzf/executable " " fzf-args)
                            (concat fzf/executable " " fzf-args)))))
+    (message "FZF COMMAND: %s" sh-cmd)
     (with-current-buffer buf
       (setq default-directory directory))
     (split-window-vertically window-height)
     (when fzf/position-bottom (other-window 1))
-    (make-term "fzf" "sh" nil "-c" sh-cmd)
+    (make-term "fzf" "/bin/bash" nil "-c" sh-cmd)
     (switch-to-buffer buf)
     (linum-mode 0)
     (visual-line-mode 0)
