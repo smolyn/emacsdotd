@@ -14,8 +14,14 @@
 
 ;(setq debug-on-error t)
 
-(setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
-(setq exec-path (append '("/usr/local/bin") exec-path))
+;; https://github.com/purcell/exec-path-from-shell
+;; only need exec-path-from-shell on OSX
+;; this hopefully sets up path and other vars better
+;; (when (memq window-system '(mac ns))
+(exec-path-from-shell-initialize)
+
+;; (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
+;; (setq exec-path (append '("/usr/local/bin") exec-path))
 
 ;; tramp
 
@@ -140,7 +146,8 @@
 (setq ag-reuse-buffers 't)
 
 
-;; flycheck
+;; ==============  flycheck
+
 (require 'flycheck)
 (setq flycheck-jshintrc "~/.emacs.d/.jshintrc")
 (setq flycheck-eslintrc "~/.emacs.d/.eslintrc")
@@ -153,7 +160,18 @@
               (append flycheck-disabled-checkers
                       '(javascript-jshint)))
 
-;; org-mode
+;; use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; customize flycheck temp file prefix
+(setq-default flycheck-temp-prefix ".flycheck")
+
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(json-jsonlist)))
+
+;; =============    org-mode
 (require 'org)
 (setq org-log-done t)
 
@@ -197,6 +215,7 @@
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier nil)
 (global-set-key "\M-`" 'other-frame)
+(global-display-line-numbers-mode)
 
 (setq split-width-threshold nil) ; prefer horizontal windows
 
@@ -236,6 +255,8 @@
       (setq buffer (car list))))
   (message "Refreshed open files"))
 
+; fzf
+;(use-package "fzf" :init (setenv "FZF_DEFAULT_COMMAND" "fd --type f"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -266,7 +287,7 @@
  '(nxml-child-indent 4)
  '(package-selected-packages
    (quote
-    (fzf counsel counsel-gtags counsel-projectile ivy-todo all-the-icons-ivy ac-octave yasnippet yaml-mode web-mode smooth-scrolling smex sass-mode powerline paredit p4 org-pomodoro org-plus-contrib org nurumacs monokai-theme minimap markdown-mode magit less-css-mode jsx-mode js2-mode ido-ubiquitous helm-projectile helm-ag git-rebase-mode git-commit-mode flycheck flx-ido find-file-in-project f es-windows es-lib coffee-mode ag)))
+    (exec-path-from-shell fzf counsel counsel-gtags counsel-projectile ivy-todo all-the-icons-ivy ac-octave yasnippet yaml-mode web-mode smooth-scrolling smex sass-mode powerline paredit p4 org-pomodoro org-plus-contrib org nurumacs monokai-theme minimap markdown-mode magit less-css-mode jsx-mode js2-mode ido-ubiquitous helm-projectile helm-ag git-rebase-mode git-commit-mode flycheck flx-ido find-file-in-project f es-windows es-lib coffee-mode ag)))
  '(projectile-project-root-files
    (quote
     ("rebar.config" "project.clj" "SConstruct" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "config.blt")))
