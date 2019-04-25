@@ -128,6 +128,13 @@
 (global-set-key (kbd "C-x l") 'counsel-locate)
 (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+(setq ivy-display-style 'fancy)
+;;advise swiper to recenter on exit
+(defun bjm-swiper-recenter (&rest args)
+  "recenter display after swiper"
+  (recenter)
+  )
+(advice-add 'swiper :after #'bjm-swiper-recenter)
 
 ;; ag
 (setq ag-reuse-buffers 't)
@@ -192,6 +199,8 @@
 (global-set-key "\M-`" 'other-frame)
 
 (setq split-width-threshold nil) ; prefer horizontal windows
+
+(global-display-line-numbers-mode)
 
 (powerline-center-theme)
 
