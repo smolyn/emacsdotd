@@ -62,7 +62,10 @@
       kept-old-versions 2
       version-control t)
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(require 'ws-butler)
+;(add-hook 'prog-mode-hook #'ws-butler-mode)
+(ws-butler-global-mode 1)
 
 ;; searching
 (define-key isearch-mode-map (kbd "C-o") 'isearch-occur)
@@ -136,11 +139,11 @@
 (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
 (setq ivy-display-style 'fancy)
 ;;advise swiper to recenter on exit
-(defun bjm-swiper-recenter (&rest args)
-  "recenter display after swiper"
-  (recenter)
-  )
-(advice-add 'swiper :after #'bjm-swiper-recenter)
+;;(defun bjm-swiper-recenter (&rest args)
+;;  "recenter display after swiper"
+;;  (recenter)
+;;  )
+;;(advice-add 'swiper :after #'bjm-swiper-recenter)
 
 ;; ag
 (setq ag-reuse-buffers 't)
@@ -256,7 +259,7 @@
   (message "Refreshed open files"))
 
 ; fzf
-;(use-package "fzf" :init (setenv "FZF_DEFAULT_COMMAND" "fd --type f"))
+                                        ;(use-package "fzf" :init (setenv "FZF_DEFAULT_COMMAND" "fd --type f"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -287,7 +290,7 @@
  '(nxml-child-indent 4)
  '(package-selected-packages
    (quote
-    (exec-path-from-shell fzf counsel counsel-gtags counsel-projectile ivy-todo all-the-icons-ivy ac-octave yasnippet yaml-mode web-mode smooth-scrolling smex sass-mode powerline paredit p4 org-pomodoro org-plus-contrib org nurumacs monokai-theme minimap markdown-mode magit less-css-mode jsx-mode js2-mode ido-ubiquitous helm-projectile helm-ag git-rebase-mode git-commit-mode flycheck flx-ido find-file-in-project f es-windows es-lib coffee-mode ag)))
+    (ws-butler exec-path-from-shell fzf counsel counsel-gtags counsel-projectile ivy-todo all-the-icons-ivy ac-octave yasnippet yaml-mode web-mode smooth-scrolling smex sass-mode powerline paredit p4 org-pomodoro org-plus-contrib org nurumacs monokai-theme minimap markdown-mode magit less-css-mode jsx-mode js2-mode ido-ubiquitous helm-projectile helm-ag git-rebase-mode git-commit-mode flycheck flx-ido find-file-in-project f es-windows es-lib coffee-mode ag)))
  '(projectile-project-root-files
    (quote
     ("rebar.config" "project.clj" "SConstruct" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "config.blt")))
