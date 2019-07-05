@@ -73,6 +73,8 @@
 
 ;; file types
 
+(require 'apex-mode)
+
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.cmp\\'" . xml-mode))
 (add-to-list 'auto-mode-alist '("\\.theme\\'" . xml-mode))
@@ -81,6 +83,8 @@
 (add-to-list 'auto-mode-alist '("\\.auradoc\\'" . xml-mode))
 (add-to-list 'auto-mode-alist '("\\.intf\\'" . xml-mode))
 (add-to-list 'auto-mode-alist '("\\.evt\\'" . xml-mode))
+(add-to-list 'auto-mode-alist '("\\.apex\\'" . apex-mode))
+(add-to-list 'auto-mode-alist '("\\.apxc\\'" . apex-mode))
 
 
 ;; octave
