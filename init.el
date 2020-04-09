@@ -29,7 +29,7 @@
 (setq tramp-default-method "ssh")
 
 ;; programming
-(global-prettify-symbols-mode +1)
+;;(global-prettify-symbols-mode +1)
 
 ;; c-mode
 
@@ -214,13 +214,15 @@
 ;; visual/UI
 
 (load-theme 'wombat t)
-(set-face-attribute 'default nil :family "Source Code Pro" :height 125 :weight 'normal)
+;(set-face-attribute 'default nil :family "Source Code Pro" :height 125 :weight 'normal)
+(set-face-attribute 'default nil :family "Fira Code" :height 145 :weight 'normal)
 (setq inhibit-startup-message t)
 (setq column-number-mode t)
 (setq mac-option-key-is-meta nil)
 (setq mac-command-key-is-meta t)
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier nil)
+(mac-auto-operator-composition-mode)
 (global-set-key "\M-`" 'other-frame)
 (global-display-line-numbers-mode)
 
