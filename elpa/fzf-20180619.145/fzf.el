@@ -113,9 +113,9 @@
   (let* ((buf (get-buffer-create "*fzf*"))
          (min-height (min fzf/window-height (/ (window-height) 2)))
          (window-height (if fzf/position-bottom (- min-height) min-height))
-         (window-system-args (when window-system " --margin=1,0"))
+         (window-system-args (when window-system " --margin=0,1,1,0"))
          (fzf-args (concat fzf/args window-system-args))
-         (sh-cmd (concat "FZF_DEFAULT_COMMAND='fd -I --type file' "
+         (sh-cmd (concat "FZF_DEFAULT_COMMAND='fd --no-ignore-vcs --type file' "
                          (if cmd-stream (concat cmd-stream " | " fzf/executable " " fzf-args)
                            (concat fzf/executable " " fzf-args)))))
     (message "FZF COMMAND: %s" sh-cmd)
@@ -123,7 +123,7 @@
       (setq default-directory directory))
     (split-window-vertically window-height)
     (when fzf/position-bottom (other-window 1))
-    (make-term "fzf" "/bin/bash" nil "-c" sh-cmd)
+    (make-term "fzf" "/bin/zsh" nil "-c" sh-cmd)
     (switch-to-buffer buf)
     (linum-mode 0)
     (visual-line-mode 0)
