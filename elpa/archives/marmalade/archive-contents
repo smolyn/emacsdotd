@@ -521,7 +521,7 @@
 	    [(2012 4 7)
 	     nil "replace a word with a synonym looked up in a web service." single])
  (theme-looper .
-	       [(20200326 1152)
+	       [(20200410 1259)
 		((emacs
 		  (24))
 		 (cl-lib
@@ -3382,7 +3382,7 @@
 	      (1 4)))
 	    "finalizers for Emacs Lisp" tar])
  (fill-column-indicator .
-			[(1 90)
+			[(1 91)
 			 nil "Graphically indicate the fill column" single])
  (file-format .
 	      [(0 0 4)
