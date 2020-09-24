@@ -9,3 +9,5 @@ recentf
 tramp
 *.elc
 transient
+.cache
+.lsp*

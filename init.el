@@ -1,51 +1,49 @@
-; gsmolyn's init.
-; yay2
+;;; Package --- Summary
 
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-			 ("marmalade" . "https://marmalade-repo.org/packages/")
-			 ("melpa" . "https://melpa.org/packages/")
-			 ("org" . "http://orgmode.org/elpa/")
-			 ))
-(setq package-enable-at-startup nil)
+;;; Commentary:
+;; All initialisation is done in emacs.org
+;; This just loads that file
+
+;; Before doing anything else, I need to configure melpa.org as a
+;; source for packages. Also, use the orgmode.org archive for org.
+(require 'package)
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
-
 ; local path
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
-;(setq debug-on-error t)
+;; Who Am I
+(setq user-full-name "Greg Smolyn"
+      user-mail-address "greg@smolyn.org")
 
-;; https://github.com/purcell/exec-path-from-shell
-;; only need exec-path-from-shell on OSX
-;; this hopefully sets up path and other vars better
-;; (when (memq window-system '(mac ns))
-(exec-path-from-shell-initialize)
+;; Use-Package
+;; Defer loading to speed up init
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(setq use-package-always-ensure t
+	  use-package-ensure-all t
+	  use-package-always-defer t)
+(require 'use-package)
+(require 'use-package-ensure)
 
-;; (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
-;; (setq exec-path (append '("/usr/local/bin") exec-path))
+;; Auto package update ??
+;; (use-package auto-package-update
+;;   :init
+;;   (auto-package-update-maybe)
+;;   (setq auto-package-update-delete-old-versions t))
 
-;; tramp
 
-(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
-(setq tramp-default-method "ssh")
+;; ====================================================================================
+;; ****** Editor Configuration
+;; *** Keep changes from 'customize' in a separate file
 
-;; programming
-;;(global-prettify-symbols-mode +1)
+(setq custom-file (expand-file-name "customize.el" user-emacs-directory))
+(load custom-file)
 
-;; c-mode
-
-(setq c-basic-offset 4)
-(setq tab-width 4)
-(setq indent-tabs-mode nil)
-(setq-default indent-tabs-mode nil)
-
-;; files
-
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-
+;; put saves in one place
 (defvar savesdir (expand-file-name "~/.emacs.d/saves/"))
-
 (setq backup-directory-alist
       `((".*" . ,savesdir)));,temporary-file-directory)))
 (setq auto-save-file-name-transforms
@@ -56,280 +54,226 @@
 (setq auto-revert-use-notify nil)
 (global-auto-revert-mode t)
 
-;; (setq backup-directory-alist `(("." . "~/.saves")))
-(setq delete-old-versions t
-      kept-new-versions 6
-      kept-old-versions 2
-      version-control t)
 
-;(add-hook 'before-save-hook 'delete-trailing-whitespace)
-(require 'ws-butler)
-;(add-hook 'prog-mode-hook #'ws-butler-mode)
-(ws-butler-global-mode 1)
-
-;; searching
-(define-key isearch-mode-map (kbd "C-o") 'isearch-occur)
-(global-set-key (kbd "C-c o") 'multi-occur)
-
-;; file types
-
-(require 'apex-mode)
-
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.cmp\\'" . xml-mode))
-(add-to-list 'auto-mode-alist '("\\.theme\\'" . xml-mode))
-(add-to-list 'auto-mode-alist '("\\.tokens\\'" . xml-mode))
-(add-to-list 'auto-mode-alist '("\\.app\\'" . xml-mode))
-(add-to-list 'auto-mode-alist '("\\.auradoc\\'" . xml-mode))
-(add-to-list 'auto-mode-alist '("\\.intf\\'" . xml-mode))
-(add-to-list 'auto-mode-alist '("\\.evt\\'" . xml-mode))
-(add-to-list 'auto-mode-alist '("\\.apex\\'" . apex-mode))
-(add-to-list 'auto-mode-alist '("\\.apxc\\'" . apex-mode))
-
-
-;; octave
-;; (require 'ac-octave)
-;; (defun ac-octave-mode-setup ()
-;;   (setq ac-sources '(ac-complete-octave)))
-;; (add-hook 'octave-mode-hook
-;;           '(lambda () (ac-octave-mode-setup)))
-
-
-;; projectile
-; change mode line for perf reasons (broken)
-; see https://github.com/bbatsov/projectile/issues/1183
-;; (setq projectile-mode-line
-;;          '(:eval (format " Projectile[%s]"
-;;                         (projectile-project-name))))
-;; (setq projectile-indexing-method 'alien)
-;; (setq projectile-enable-caching t)
-;; (setq projectile-completion-system 'ivy)
-;; (setq projectile-tags-command "/usr/local/bin/ctags -Re -f %s %s")
-;; (setq projectile-globally-ignored-file-extensions '(".o" ".d" ".pyc" ".class" ))
-;; (projectile-global-mode)
-
-;; projectile/helm
-;; (require 'helm-config)
-;; (helm-projectile-on)
-;; (setq helm-quick-update t
-;;      helm-idle-delay 0.01
-;;     helm-input-idle-delay 0.01)
-;; (setq helm-ff-file-name-history-use-recentf t)
-;; (global-set-key (kbd "M-x") 'helm-M-x)
-;; (helm-mode 1)
-
-;; ivy
-(all-the-icons-ivy-setup)
-(ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
-(setq ivy-count-format "(%d/%d) ")
-(setq ivy-re-builders-alist
-      '((t . ivy--regex-ignore-order)))
-(global-set-key (kbd "C-S-s") 'swiper)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-;(global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-;; (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-;; (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-;; (global-set-key (kbd "<f1> l") 'counsel-find-library)
-;; (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-;; (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-;; (global-set-key (kbd "C-c g") 'counsel-git)
-;; (global-set-key (kbd "C-c j") 'counsel-git-grep)
-;; (global-set-key (kbd "C-c k") 'counsel-ag)
-;; (global-set-key (kbd "C-x l") 'counsel-locate)
-;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-(define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-(setq ivy-display-style 'fancy)
-;;advise swiper to recenter on exit
-;;(defun bjm-swiper-recenter (&rest args)
-;;  "recenter display after swiper"
-;;  (recenter)
-;;  )
-;;(advice-add 'swiper :after #'bjm-swiper-recenter)
-
-;; ag
-(setq ag-reuse-buffers 't)
-
-
-;; ==============  flycheck
-
-(require 'flycheck)
-(setq flycheck-jshintrc "~/.emacs.d/.jshintrc")
-(setq flycheck-eslintrc "~/.emacs.d/.eslintrc")
-(add-hook 'js-mode-hook
-          (lambda () (flycheck-mode t)))
-(flycheck-add-mode 'javascript-eslint 'js2-mode)
-(flycheck-add-mode 'javascript-eslint 'js-mode)
-
-(setq-default flycheck-disabled-checkers
-              (append flycheck-disabled-checkers
-                      '(javascript-jshint)))
-
-;; use eslint with web-mode for jsx files
-(flycheck-add-mode 'javascript-eslint 'web-mode)
-
-;; customize flycheck temp file prefix
-(setq-default flycheck-temp-prefix ".flycheck")
-
-;; disable json-jsonlist checking for json files
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-    '(json-jsonlist)))
-
-;; =============    org-mode
-(require 'org)
-(setq org-log-done t)
-
-(require 'xunitjs)
-
-;;
-;; jsx/react
-;;
-;; (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-;; (defadvice web-mode-highlight-part (around tweak-jsx activate)
-;;   (if (equal web-mode-content-type "jsx")
-;;       (let ((web-mode-enable-part-face nil))
-;;         ad-do-it)
-;;     ad-do-it))
-;; (flycheck-define-checker jsxhint-checker
-;;   "A JSX syntax and style checker based on JSXHint."
-
-;;   :command ("jsxhint" source)
-;;   :error-patterns
-;;   ((error line-start (1+ nonl) ": line " line ", col " column ", " (message) line-end))
-;;   :modes (web-mode))
-;; (add-hook 'web-mode-hook
-;;           (lambda ()
-;;             (when (equal web-mode-content-type "jsx")
-;;               ;; enable flycheck
-;;               (flycheck-select-checker 'jsxhint-checker)
-;;               (flycheck-mode))))
-;; (defun my-web-mode-hook ()
-;;   (setq web-mode-enable-auto-quoting nil)
-;;   (setq web-mode-enable-auto-closing nil))
-;; (add-hook 'web-mode-hook 'my-web-mode-hook)
-
-;; visual/UI
-
+;; *** UI
 (load-theme 'wombat t)
+(powerline-center-theme)
+(tool-bar-mode -1)
 ;(set-face-attribute 'default nil :family "Source Code Pro" :height 125 :weight 'normal)
 (set-face-attribute 'default nil :family "Fira Code" :height 145 :weight 'normal)
+
 (setq inhibit-startup-message t)
+
+;; show column numbers
 (setq column-number-mode t)
+(global-display-line-numbers-mode)
+
+;; allow for quick switching between frames
+(global-set-key "\M-`" 'other-frame)
+
+; prefer horizontal windows
+(setq split-width-threshold nil)
+
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; still need? TODO
+(require 'smooth-scrolling)
+(setq mouse-wheel-scroll-amount '(1))
+
+;; *** Unbind the pesky sleep key
+(global-unset-key [(control z)])
+(global-unset-key [(control x)(control z)])
+
+;; enable recentf mode
+(recentf-mode 1)
+(setq recentf-max-menu-items 50)
+(setq recentf-max-saved-items 250)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
+;; *** Enable overwriting selected text
+(delete-selection-mode t)
+
+;; *** Disable audible bell, use visual instead
+(setq ring-bell-function 'ignore)
+(setq visible-bell t)
+
+;; *** Mac keys
 (setq mac-option-key-is-meta nil)
 (setq mac-command-key-is-meta t)
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier nil)
 (mac-auto-operator-composition-mode)
-(global-set-key "\M-`" 'other-frame)
-(global-display-line-numbers-mode)
 
-(setq split-width-threshold nil) ; prefer horizontal windows
+;;*** Show trailing white space
+;; Show white space at the ends of line, to avoid embarassment when
+;; comitting something. Then delete them with M-x delete-trailing-whitespace
+(setq-default show-trailing-whitespace t)
 
-(global-display-line-numbers-mode)
+;; *** Diminish
+;; Use diminish so that use-package can hid modes from the mode line when
+;; we ask it to.
+(use-package diminish)
 
-(powerline-center-theme)
+;; ==================== ORG MODE
+(use-package org
+             :pin org ;; use version from orgmode.org/elpa instead of gnu.
+             :custom
+             (org-src-tab-acts-natively t)
+             (org-src-window-setup 'current-window) ;; edit src blocks in place, rather than a new window
+             (org-hide-emphasis-markers t) ;;actually emphasise text (e.g. show as italic instead of /italic/)
+             )
 
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-(require 'smooth-scrolling)
-(setq mouse-wheel-scroll-amount '(1))
-
-
-(defun my-minibuffer-setup-hook ()
-  (setq gc-cons-threshold most-positive-fixnum))
-(defun my-minibuffer-exit-hook ()
-  (setq gc-cons-threshold 800000))
-(add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
-(add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
-
-;;(setq gc-cons-threshold 10000000)
-
-; FUNCTIONS
-;
-;
-(defun revert-all-buffers ()
-  "Refreshes all open buffers from their respective files"
-  (interactive)
-  (let* ((list (buffer-list))
-         (buffer (car list)))
-    (while buffer
-      (when (and (buffer-file-name buffer)
-                 (not (buffer-modified-p buffer)))
-        (set-buffer buffer)
-        (revert-buffer t t t))
-      (setq list (cdr list))
-      (setq buffer (car list))))
-  (message "Refreshed open files"))
-
-; fzf
-                                        ;(use-package "fzf" :init (setenv "FZF_DEFAULT_COMMAND" "fd --type f"))
+  (use-package org-plus-contrib
+               :pin org
+               :after org)
 
 
-;; typescript/tide
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  ;; company is an optional dependency. You have to
-  ;; install it separately via package-install
-  ;; `M-x package-install [ret] company`
-  (company-mode +1))
+;; ========================  Markdown
+;;Sometimes I need to edit markdown, so here's how to configure [[https://github.com/jrblevin/markdown-mode][markdown-mode]].
+;; For README.md files, use github flavoured markdown, otherwise use normal markdown mode.
 
-;; aligns annotation to the right hand side
-(setq company-tooltip-align-annotations t)
+(use-package markdown-mode
+             :mode (("README\\.md\\'" . gfm-mode)
+	                ("\\.md\\'" . markdown-mode)
+	                ("\\.markdown\\'" . markdown-mode)))
 
-;; formats the buffer before saving
-(add-hook 'before-save-hook 'tide-format-before-save)
-
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
+;; ==================== ** Git stuff
+;;Magit is a great interface to git (although the [[https://magit.vc/manual/magit/][documentation]] is quite dense).
+(use-package magit
+             :bind (("C-x g" . magit-status)
+	                ("C-x M-g" . magit-dispatch-popup)))
 
 
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(counsel-async-filter-update-time 1000)
- '(helm-completing-read-handlers-alist
-   (quote
-    ((describe-function . helm-completing-read-symbols)
-     (describe-variable . helm-completing-read-symbols)
-     (describe-symbol . helm-completing-read-symbols)
-     (debug-on-entry . helm-completing-read-symbols)
-     (find-function . helm-completing-read-symbols)
-     (disassemble . helm-completing-read-symbols)
-     (trace-function . helm-completing-read-symbols)
-     (trace-function-foreground . helm-completing-read-symbols)
-     (trace-function-background . helm-completing-read-symbols)
-     (find-tag . helm-completing-read-with-cands-in-buffer)
-     (org-capture . helm-org-completing-read-tags)
-     (org-set-tags . helm-org-completing-read-tags)
-     (ffap-alternate-file)
-     (tmm-menubar)
-     (find-file . helm-completing-read-symbols)
-     (execute-extended-command))))
- '(ivy-dynamic-exhibit-delay-ms 500)
- '(linum-delay t)
- '(nxml-child-indent 4)
- '(package-selected-packages
-   (quote
-    (company tide ws-butler exec-path-from-shell fzf counsel counsel-gtags counsel-projectile ivy-todo all-the-icons-ivy ac-octave yasnippet yaml-mode web-mode smooth-scrolling smex sass-mode powerline paredit p4 org-pomodoro org-plus-contrib org nurumacs monokai-theme minimap markdown-mode magit less-css-mode jsx-mode js2-mode ido-ubiquitous helm-projectile helm-ag git-rebase-mode git-commit-mode flycheck flx-ido find-file-in-project f es-windows es-lib coffee-mode ag)))
- '(projectile-project-root-files
-   (quote
-    ("rebar.config" "project.clj" "SConstruct" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "config.blt")))
- '(tab-stop-list nil)
- '(tab-width 4)
- '(tool-bar-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; I like to have a visual git status in the gutter/fringe, for that I use [[https://github.com/emacsorphanage/git-gutter][git-gutter.el]]
+;; diminished so it doesn't show in mode line
+;;   (use-package git-gutter
+;;     :diminish git-gutter-mode
+;;     :init
+;;     (custom-set-variables
+;;      '(git-gutter:update-interval 2))
+;;     :config
+;;     (global-git-gutter-mode +1))
+
+;; ========================= IVY
+
+ (use-package ivy
+    :diminish ivy-mode
+    :config
+    (all-the-icons-ivy-setup)
+    (ivy-mode 1)
+    ;; add 'recent-mode' and bookmarks to 'ivy-switch-buffer'.
+    (setq ivy-use-virtual-buffers t)
+    ;; number of result lines to display
+    ;;(setq ivy-height 10)
+    (setq ivy-count-format "(%d/%d) ")
+    (setq ivy-display-style 'fancy)
+    )
+
+
+;; ========================= COUNSEL
+
+(use-package counsel-projectile)
+(use-package counsel
+             :diminish counsel-mode
+             :config
+             (counsel-mode 1))
+
+;; ========================= SWIPER
+
+(use-package swiper
+             :commands (swiper swiper-all)
+             :bind ("C-S-s" . 'swiper))
+
+
+
+;; ========================= PROJECTILE
+
+(use-package projectile
+             :demand
+             :bind (:map projectile-mode-map
+	                     ("C-c p" . projectile-command-map))
+             :init
+             (setq projectile-completion-system 'ivy)
+             (setq projectile-enable-caching t)
+             :config
+             (add-to-list 'projectile-globally-ignored-files "node-modules")
+             (projectile-mode))
+
+(use-package counsel-projectile
+             :demand
+             :config
+             (counsel-projectile-mode))
+
+;; ================================ ** Code/Text Completion (company-mode)
+;; Got to have those sweet code-completion popups, courtesy of [[https://company-mode.github.io/][company-mode]].
+(use-package company
+             :diminish
+             :init
+             (global-company-mode))
+
+
+
+
+;; ============================= ** Development languages
+;;
+;; I'm going to try lsp-mode again, for languages it supports.
+;; Here's the core lsp-configuration:
+(setq lsp-keymap-prefix "C-l")
+
+(use-package lsp-mode
+             :hook (
+	                ;; bind lsp to the development modes I'm interested in.
+	                (web-mode . lsp-deferred)
+	   (lsp-mode . lsp-enable-which-key-integration))
+             :init
+             (setq lsp-enable-completion-at-point t)
+    (setq lsp-enable-indentation t)
+    (setq lsp-enable-on-type-formatting t)
+    :commands lsp lsp-deferred)
+
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+(use-package which-key
+             :config
+             (which-key-mode))
+
+
+;; web-mode
+  (use-package web-mode
+    :ensure t
+    :mode (("\\.js\\'" . web-mode)
+	   ("\\.jsx\\'" . web-mode)
+	   ("\\.ts\\'" . web-mode)
+	   ("\\.tsx\\'" . web-mode)
+	   ("\\.html\\'" . web-mode)
+	   ("\\.vue\\'" . web-mode)
+	   ("\\.json\\'" . web-mode))
+    :commands web-mode
+    :config
+    (setq company-tooltip-align-annotations t)
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-code-indent-offset 2)
+    (setq web-mode-enable-part-face t)
+    (setq web-mode-content-types-alist
+	  '(("jsx" . "\\.js[x]?\\'")))
+    )
+
+
+; use whitespace butler to remove extra whitespace
+(use-package ws-butler
+             :diminish
+             :init
+             (ws-butler-global-mode 1))
+
+
+;; searching
+;; keep multi-occur
+(define-key isearch-mode-map (kbd "C-o") 'isearch-occur)
+(global-set-key (kbd "C-c o") 'multi-occur)
+
+;; ag
+(setq ag-reuse-buffers 't)
