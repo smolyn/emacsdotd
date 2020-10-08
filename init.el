@@ -49,10 +49,18 @@
 (setq auto-save-file-name-transforms
       `((".*" ,savesdir t)));,temporary-file-directory t)))
 (setq auto-save-list-file-prefix savesdir)
-(setq backup-by-copying t)
 (setq create-lockfiles nil)
 (setq auto-revert-use-notify nil)
 (global-auto-revert-mode t)
+
+;; backups
+(setq
+ backup-by-copying t     ; don't clobber symlinks
+ kept-new-versions 10    ; keep 10 latest versions
+ kept-old-versions 0     ; don't bother with old versions
+ delete-old-versions t   ; don't ask about deleting old versions
+ version-control t       ; number backups
+ vc-make-backup-files t) ; backup version controlled files
 
 
 ;; *** UI
@@ -86,10 +94,12 @@
 (global-unset-key [(control x)(control z)])
 
 ;; enable recentf mode
-(recentf-mode 1)
 (setq recentf-max-menu-items 50)
 (setq recentf-max-saved-items 250)
+(recentf-mode 1)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
+(run-at-time nil (* 5 60) 'recentf-save-list)
+(setq recentf-auto-cleanup 600)
 
 ;; *** Enable overwriting selected text
 (delete-selection-mode t)
@@ -239,6 +249,11 @@
 (use-package which-key
              :config
              (which-key-mode))
+
+;; lsp-mode perf
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
+(setq lsp-completion-provider :capf)
+(setq gc-cons-threshold 100000000)
 
 
 ;; web-mode
