@@ -1,2 +1,0 @@
-;;; Generated package description from /Users/gsmolyn/.emacs.d/elpa/treemacs-magit-20200901.1550/treemacs-magit.el  -*- no-byte-compile: t -*-
-(define-package "treemacs-magit" "20200901.1550" "Magit integration for treemacs" '((emacs "25.2") (treemacs "0.0") (pfuture "1.3") (magit "2.90.0")) :commit "18baf5d412645ea780aec718f8960904d6bf91c1" :authors '(("Alexander Miller" . "alexanderm@web.de")) :maintainer '("Alexander Miller" . "alexanderm@web.de") :url "https://github.com/Alexander-Miller/treemacs")
