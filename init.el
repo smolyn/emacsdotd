@@ -292,3 +292,6 @@
 
 ;; ag
 (setq ag-reuse-buffers 't)
+
+;; fzf
+(setenv "FZF_DEFAULT_COMMAND" "fd --no-ignore --type f")

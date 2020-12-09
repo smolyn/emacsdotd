@@ -114,7 +114,7 @@
   (let* ((buf (get-buffer-create "*fzf*"))
          (min-height (min fzf/window-height (/ (window-height) 2)))
          (window-height (if fzf/position-bottom (- min-height) min-height))
-         (window-system-args (when window-system " --margin=1,0"))
+         (window-system-args (when window-system " --margin=0,1,1,0"))
          (fzf-args (concat fzf/args window-system-args))
          (sh-cmd (if cmd-stream (concat cmd-stream " | " fzf/executable " " fzf-args)
                    (concat fzf/executable " " fzf-args))))
