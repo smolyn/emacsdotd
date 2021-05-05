@@ -1,6 +1,6 @@
 ;;; packed.el --- package manager agnostic Emacs Lisp package utilities  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012-2018  Jonas Bernoulli
+;; Copyright (C) 2012-2021  Jonas Bernoulli
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Homepage: https://github.com/emacscollective/packed
@@ -21,6 +21,8 @@
 
 ;; For a full copy of the GNU General Public License
 ;; see <http://www.gnu.org/licenses/>.
+
+;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;;; Commentary:
 
@@ -322,9 +324,9 @@ Elements of `load-path' which no longer exist are not removed."
          emacs-lisp-mode-hook)
      ,@body))
 
-(defun packed-byte-compile-file (filename &optional load)
+(defun packed-byte-compile-file (filename)
   "Like `byte-compile-file' but don't run any mode hooks."
-  (packed-without-mode-hooks (byte-compile-file filename load)))
+  (packed-without-mode-hooks (byte-compile-file filename)))
 
 (defun packed-compile-package (directory &optional force)
   (unless noninteractive
@@ -407,7 +409,10 @@ nil if not found."
 
 (defun packed-update-autoloads (dest path)
   (packed-with-loaddefs dest
-    (update-directory-autoloads path)))
+    (cond ((fboundp 'make-directory-autoloads)   ; >= 28
+           (make-directory-autoloads path generated-autoload-file))
+          ((fboundp 'update-directory-autoloads) ; <= 27
+           (update-directory-autoloads path)))))
 
 (defun packed-remove-autoloads (dest path)
   (packed-with-loaddefs dest
