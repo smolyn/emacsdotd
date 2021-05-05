@@ -63,7 +63,7 @@
   :type 'string
   :group 'fzf)
 
-(defcustom fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
+(defcustom fzf/args "-x --color bw --print-query --margin=0,1,1,0 --no-hscroll"
   "Additional arguments to pass into fzf."
   :type 'string
   :group 'fzf)
