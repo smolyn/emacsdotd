@@ -35,6 +35,10 @@
 ;;   (setq auto-package-update-delete-old-versions t))
 
 
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
+
 ;; ====================================================================================
 ;; ****** Editor Configuration
 ;; *** Keep changes from 'customize' in a separate file
