@@ -278,9 +278,14 @@
 
 ;; ============================= ** Development languages
 ;;
+
+(setq-default indent-tabs-mode nil)
+
 ;; I'm going to try lsp-mode again, for languages it supports.
 ;; Here's the core lsp-configuration:
 (setq lsp-keymap-prefix "C-l")
+
+
 
 (use-package lsp-mode
              :hook (
@@ -344,4 +349,6 @@
 (setq ag-reuse-buffers 't)
 
 ;; fzf
-(setenv "FZF_DEFAULT_COMMAND" "fd --no-ignore --type f")
+(setenv "FZF_DEFAULT_COMMAND" "fd --type f")
+
+(server-start)
